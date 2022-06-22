@@ -247,6 +247,8 @@ class BuildPack:
             # Utils!
             "less",
             "unzip",
+            # Gives us envsubst
+            "gettext-base",
         }
 
     def get_build_env(self):
