@@ -12,7 +12,7 @@ import escapism
 
 # Only use syntax features supported by Docker 17.09
 TEMPLATE = r"""
-FROM buildpack-deps:focal
+FROM {{base_image}}
 
 # Avoid prompts from apt
 ENV DEBIAN_FRONTEND=noninteractive
@@ -204,7 +204,6 @@ class BuildPack:
     Specifically used for creating Dockerfiles for use with repo2docker only.
 
     Things that are kept constant:
-     - base image
      - some environment variables (such as locale)
      - user creation & ownership of home directory
      - working directory
@@ -214,9 +213,13 @@ class BuildPack:
 
     """
 
-    def __init__(self):
+    def __init__(self, base_image):
+        """
+        base_image specifies the base image to use when building docker images
+        """
         self.log = logging.getLogger("repo2docker")
         self.appendix = ""
+        self.base_image = base_image
         self.labels = {}
         if sys.platform.startswith("win"):
             self.log.warning(
@@ -516,6 +519,7 @@ class BuildPack:
             appendix=self.appendix,
             # For docker 17.09 `COPY --chown`, 19.03 would allow using $NBUSER
             user=build_args.get("NB_UID", DEFAULT_NB_UID),
+            base_image=self.base_image,
         )
 
     @staticmethod
