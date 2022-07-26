@@ -421,7 +421,7 @@ class Repo2Docker(Application):
         help="""
         Base image to use when building docker images.
 
-        Should be an ubuntu derivative, minimum 18.04.
+        Should be an Ubuntu derivative, minimum 18.04.
         """,
     )
 
